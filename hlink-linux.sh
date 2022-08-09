@@ -1,6 +1,7 @@
 #!/bin/bash
 wget https://nodejs.org/dist/v16.16.0/node-v16.16.0-linux-x64.tar.xz
 mv node-v16.16.0-linux-x64.tar.xz node.tar.gz
+chown 1000:1000 -R /mnt/Z && chmod 777 -R /mnt/Z
 apt-get install npm -y
 npm install -g hlink
 tar -xvf /mnt/Z/node.tar.gz
@@ -54,8 +55,8 @@ export default {
   mkdirIfSingle: true,
 }
 EOB
+chown 1000:1000 -R /mnt/Z/ && chmod 777 -R /mnt/Z/
 cp /root/hlink.config.mjs /mnt/Z/hlink.config.mjs
-
 tee /mnt/Z/hlinkhj.sh <<-'EOF'
 #! /bin/bash
 ln -s /mnt/Z/node/bin/npm /usr/local/bin/
