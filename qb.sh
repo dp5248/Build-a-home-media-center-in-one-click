@@ -1,3 +1,5 @@
+mkdir /mnt/Z -p && cd /mnt/Z && chmod 777 -R .
+tee /mnt/Z/qb.sh > /dev/null <<-'EOA'
 #!/bin/bash
 read -p "容器明名为：" rqm
 read -p "PUID为：" PUID
@@ -45,3 +47,5 @@ chmod 777 -R $SZWJ $XZ1
 docker run --name=$rqm --restart=always --network=host -e PUID=$PUID -e PGID=$PGID -e TZ=Asia/Shanghai -e WEBUI_PORT=$WEBUI -v $SZWJ/config:/config -v $XZ1:/downloads -v $XZ1:/$xz1 linuxserver/qbittorrent:14.3.9
 fi
 echo '官方qb4.3.9已安装完毕，访问端口为$WEBUI，默认帐号为admin，默认密码为adminadmin。'
+EOA
+sh qb.sh
