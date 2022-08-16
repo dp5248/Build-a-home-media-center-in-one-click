@@ -1,4 +1,5 @@
 #!/bin/bash
+mkdir /mnt/Z -p && cd /mnt/Z && chmod 777 -R .
 read -p "容器明名为：" rqm
 read -p "PUID为：" PUID
 read -p "PGID为：" PGID
