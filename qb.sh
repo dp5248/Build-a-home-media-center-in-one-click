@@ -1,6 +1,6 @@
 #!/bin/bash
 mkdir /mnt/Z -p && cd /mnt/Z && chmod 777 -R .
-tee /mnt/Z/qb.sh > /dev/null <<-'EOA'
+tee /mnt/Z/QB.sh > /dev/null <<-'EOA'
 #!/bin/bash
 read -p "容器明名为：" rqm
 read -p "PUID为：" PUID
@@ -49,4 +49,4 @@ docker run --name=$rqm --restart=always --network=host -e PUID=$PUID -e PGID=$PG
 fi
 echo '官方qb4.3.9已安装完毕，访问端口为$WEBUI，默认帐号为admin，默认密码为adminadmin。'
 EOA
-sh qb.sh
+sh QB.sh
