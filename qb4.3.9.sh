@@ -1,6 +1,4 @@
 #!/bin/bash
-mkdir /mnt/Z -p && cd /mnt/Z && chmod 777 -R .
-tee /mnt/Z/qb.sh > /dev/null <<-'EOA'
 read -p "容器明名为：" rqm
 read -p "PUID为：" PUID
 read -p "PGID为：" PGID
@@ -27,21 +25,23 @@ read -p "下载路径4映射(如ge)为：" xz4
 else echo '不设置下载路径4'
 fi
 if [ $lj2 = y ] && [ $lj3 = y ] && [ $lj4 = y ];then
+mkdir -p $SZWJ $XZ1 $XZ2 $XZ3 $XZ4
 chmod 777 -R $SZWJ $XZ1 $XZ2 $XZ3 $XZ4
 docker run --name=$rqm --restart=always --network=host -e PUID=$PUID -e PGID=$PGID -e TZ=Asia/Shanghai -e WEBUI_PORT=$WEBUI -v $SZWJ/config:/config -v $XZ1:/downloads -v $XZ1:/$xz1 -v $XZ2:/$xz2 -v $XZ3:/$xz3 -v $XZ4:/$xz4 linuxserver/qbittorrent:14.3.9
 fi
 if [ $lj2 = y ] && [ $lj3 = y ] && [ $lj4 = n ];then
+mkdir -p $SZWJ $XZ1 $XZ2 $XZ3
 chmod 777 -R $SZWJ $XZ1 $XZ2 $XZ3
 docker run --name=$rqm --restart=always --network=host -e PUID=$PUID -e PGID=$PGID -e TZ=Asia/Shanghai -e WEBUI_PORT=$WEBUI -v $SZWJ/config:/config -v $XZ1:/downloads -v $XZ1:/$xz1 -v $XZ2:/$xz2 -v $XZ3:/$xz3 linuxserver/qbittorrent:14.3.9
 fi
 if [ $lj2 = y ] && [ $lj3 = n ] && [ $lj4 = n ];then
+mkdir -p $SZWJ $XZ1 $XZ2
 chmod 777 -R $SZWJ $XZ1 $XZ2
 docker run --name=$rqm --restart=always --network=host -e PUID=$PUID -e PGID=$PGID -e TZ=Asia/Shanghai -e WEBUI_PORT=$WEBUI -v $SZWJ/config:/config -v $XZ1:/downloads -v $XZ1:/$xz1 -v $XZ2:/$xz2 linuxserver/qbittorrent:14.3.9
 fi
 if [ $lj2 = n ] && [ $lj3 = n ] && [ $lj4 = n ];then
+mkdir -p $SZWJ $XZ1
 chmod 777 -R $SZWJ $XZ1
 docker run --name=$rqm --restart=always --network=host -e PUID=$PUID -e PGID=$PGID -e TZ=Asia/Shanghai -e WEBUI_PORT=$WEBUI -v $SZWJ/config:/config -v $XZ1:/downloads -v $XZ1:/$xz1 linuxserver/qbittorrent:14.3.9
 fi
 echo '官方qb4.3.9已安装完毕，访问端口为$WEBUI，默认帐号为admin，默认密码为adminadmin。'
-EOA
-sh qb.sh
