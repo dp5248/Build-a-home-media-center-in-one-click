@@ -46,6 +46,7 @@ docker run -d \
 -p 11160:3000 \
 -e TZ=Asia/Shanghai \
 lswl/vertex:stable
+sleep 10
 vtmm=`cat /mnt/$wj/docker/vertex/data/password`
 echo "vertex端口号为11160,用户名为admin,密码为$vtmm" >> ~/ZJ/note.txt
 else echo "不安装vertex";fi
@@ -59,6 +60,7 @@ printf "docker run -d --name QS --restart=always --network=host -e WEB_PORT=1116
 printf "\n80x86/qbittorrent:4.3.5-alpine-3.13.5-amd64-full" >> ~/ZJ/QS.sh
 chmod +x ~/ZJ/QS.sh
 sh ~/ZJ/QS.sh
+sleep 10
 cd /mnt/$wj/docker/QS/config
 find -name 'qBittorrent.conf' | xargs perl -pi -e 's|WebUI\HTTPS\Enabled=true|WebUI\HTTPS\Enabled=false|g'
 docker restart QS
@@ -73,6 +75,7 @@ printf "docker run -d --name QP --restart=always --network=host -e WEB_PORT=1117
 printf "\n80x86/qbittorrent:4.3.5-alpine-3.13.5-amd64-full" >> ~/ZJ/QP.sh
 chmod +x ~/ZJ/QP.sh
 sh ~/ZJ/QP.sh
+sleep 10
 cd /mnt/$wj/docker/QP/config
 find -name 'qBittorrent.conf' | xargs perl -pi -e 's|WebUI\HTTPS\Enabled=true|WebUI\HTTPS\Enabled=false|g'
 docker restart QP
@@ -100,6 +103,7 @@ printf "docker run -d --name QB --restart=always --network=host -e WEB_PORT=1118
 printf "\n80x86/qbittorrent:4.3.5-alpine-3.13.5-amd64-full" >> ~/ZJ/QB.sh
 chmod +x ~/ZJ/QB.sh
 sh ~/ZJ/QB.sh
+sleep 10
 cd /mnt/$wj/docker/QB/config
 find -name 'qBittorrent.conf' | xargs perl -pi -e 's|WebUI\HTTPS\Enabled=true|WebUI\HTTPS\Enabled=false|g'
 docker restart QB
@@ -112,7 +116,7 @@ if [ $tr = y ];then
 read -p "该TR的用户名设置为：" tr1
 read -p "该TR的密码设置为：" tr2
 echo '#!/bin/bash' >> ~/ZJ/TP.sh
-printf "docker run -d --name TP --restart=always --network=host -e RPCPORT=11171 -e PEERPORT=38671 -e TR_USER=$tr1 -e TR_PASS=$tr2 -e PUID=1000 -e PGID=1000 -e TZ=Asia/Shanghai -v /mnt/$wj/docker/TP/config:/config -v /mnt/$wj/docker/TP/watch:/watch `cat ~/ZJ/QB.txt`" >> ~/ZJ/TR.sh
+printf "docker run -d --name TR --restart=always --network=host -e RPCPORT=11171 -e PEERPORT=38671 -e TR_USER=$tr1 -e TR_PASS=$tr2 -e PUID=1000 -e PGID=1000 -e TZ=Asia/Shanghai -v /mnt/$wj/docker/TP/config:/config -v /mnt/$wj/docker/TP/watch:/watch `cat ~/ZJ/QB.txt`" >> ~/ZJ/TR.sh
 printf "\ndocker.io/chisbread/transmission:version-3.00-r13" >> ~/ZJ/TR.sh
 chmod +x ~/ZJ/TR.sh
 sh ~/ZJ/TR.sh
@@ -243,7 +247,7 @@ printf "\nallanpk716/chinesesubfinder:latest" >> ~/ZJ/ZIMU.sh
 printf "\nsed '/ssh/d' ~/ZJ/note.txt | tee ~/ZJ/note.txt" >> ~/ZJ/ZIMU.sh
 printf "\nsed '/cat ~/ZJ/note.txt/d' ~/ZJ/note.txt | tee ~/ZJ/note.txt" >> ~/ZJ/ZIMU.sh
 pirntf "\necho Chineseubfinder的端口为19035 >> ~/ZJ/note.txt" >> ~/ZJ/ZIMU.sh
-printf "echo 以后需要查看本次装机相关内容请输入cat ~/ZJ/note.txt可查看（这句指令建议记录好） >> ~/ZJ/note.txt" >> ~/ZJ/ZIMU.sh
+printf "\necho 以后需要查看本次装机相关内容请输入cat ~/ZJ/note.txt可查看（这句指令建议记录好） >> ~/ZJ/note.txt" >> ~/ZJ/ZIMU.sh
 chmod +x ~/ZJ/ZIMU.sh
 echo "请设置好nastools后，在ssh窗口输入sh ~/ZJ/ZIMU.sh以安装ChineseSubFinder" >> ~/ZJ/note.txt
 echo "以后需要查看本次装机相关内容请输入cat ~/ZJ/note.txt可查看（这句指令建议记录好）" >> ~/ZJ/note.txt
