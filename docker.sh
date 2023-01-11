@@ -50,7 +50,7 @@ else echo "不安装vertex";fi
 
 #QS
 read -p "是否需要安装刷流QB（用途：专门用于刷流的QB）(y/n):" qs
-if [ $qs = y];then
+if [ $qs = y ];then
 echo '#!/bin/bash' >> /mnt/Z/QS.sh
 printf "docker run -d --name QS --restart=always --network=host -e WEB_PORT=11161 -e BT_PORT=38661 -e PUID=1000 -e PGID=1000 -v /mnt/$wj/docker/QS/config:/config -v /mnt/$wj/docker/QS/data:/data `cat /mnt/Z/QS`" >> /mnt/Z/QS.sh
 printf "\n80x86/qbittorrent:4.3.5-alpine-3.13.5-amd64-full" >> /mnt/Z/QS.sh
@@ -64,7 +64,7 @@ else echo "不安装刷流QB";fi
 
 #QP
 read -p "是否需要安装片库QB（用途：专门用于刷流的QB）(y/n):" qp
-if [ $qp = y];then
+if [ $qp = y ];then
 echo '#!/bin/bash' >> /mnt/Z/QS.sh
 printf "docker run -d --name QP --restart=always --network=host -e WEB_PORT=11170 -e BT_PORT=38670 -e PUID=1000 -e PGID=1000 -v /mnt/$wj/docker/QP/config:/config -v /mnt/$wj/docker/QP/data:/data `cat /mnt/Z/QP`" >> /mnt/Z/QP.sh
 printf "\n80x86/qbittorrent:4.3.5-alpine-3.13.5-amd64-full" >> /mnt/Z/QP.sh
@@ -91,7 +91,7 @@ else echo "不安装片库TR";fi
 
 #QB
 read -p "是否需要安装保种QB（用途：与片库QB独立）(y/n):" qb
-if [ $qb = y];then
+if [ $qb = y ];then
 echo '#!/bin/bash' >> /mnt/Z/QB.sh
 printf "docker run -d --name QB --restart=always --network=host -e WEB_PORT=11180 -e BT_PORT=38680 -e PUID=1000 -e PGID=1000 -v /mnt/$wj/docker/QB/config:/config -v /mnt/$wj/docker/QB/data:/data `cat /mnt/Z/QB`" >> /mnt/Z/QB.sh
 printf "\n80x86/qbittorrent:4.3.5-alpine-3.13.5-amd64-full" >> /mnt/Z/QB.sh
