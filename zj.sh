@@ -19,19 +19,22 @@ sudo apt install -y vim curl npm samba nfs-common nfs-kernel-server nfs-common
 #挂载硬盘并创建smb共享
 sudo chown 1000:1000 -R /mnt
 sudo chmod 777 /etc/fstab
-for var in sd{b..z}
+pw1=({a..z})
+xtp=`df -h | grep /boot | cut -b 8`
+pw=( ${pw1[*]/$xtp} )
+for var in ${pw[@]}
 do
-        if [ -b /dev/$var ];then
-        read -p "你有一块盘大小为`sudo fdisk -l | grep -oP "(?<=(Disk /dev/$var)).*" | cut -d" " -f2-3`盘位为/dev/$var,是否格式化该硬盘（y/n）:" b
-        if [ $b = y ];then sudo mkfs.ext4 /dev/$var;
+        if [ -b /dev/sd$var ];then
+        read -p "你有一块盘大小为`sudo fdisk -l | grep -oP "(?<=(Disk /dev/sd$var)).*" | cut -d" " -f2-3`盘位为/dev/sd$var,是否格式化该硬盘（y/n）:" b
+        if [ $b = y ];then sudo mkfs.ext4 /dev/sd$var;
         else echo '本操作没格式化该硬盘';
         fi
         read -p "是否需要挂载该硬盘(y/n)：" c
         if [ $c = y ];then 
         read -p "请输入想命名的非中文名称（尽量简短，不同名称之间不要重复）:" b0
         mkdir /mnt/$b0 -p
-        b1=`sudo blkid | grep -oP "(?<=(/dev/$var)).*" | cut -d" " -f2 | cut -c 7-42`
-        b2=`sudo blkid | grep -oP "(?<=(/dev/$var)).*" | cut -d" " -f4 | cut -c 7-10`
+        b1=`sudo blkid | grep -oP "(?<=(/dev/sd$var)).*" | cut -d" " -f2 | cut -c 7-42`
+        b2=`sudo blkid | grep -oP "(?<=(/dev/sd$var)).*" | cut -d" " -f4 | cut -c 7-10`
         sudo echo UUID=$b1 /mnt/$b0 $b2 defaults 0 0 >> /etc/fstab
         printf "%s [$b0]\n comment = $b0\n path = /mnt/$b0\n read only = no\n browsable = yes\n public = yes\n available = yes\n writable = yes\n" | sudo tee /etc/samba/smb.conf -a > /dev/null
         printf %s "-v /mnt/$b0/qs:/$b0 \\" >> ~/ZJ/QS
@@ -140,4 +143,4 @@ user=`ls /home`
 sudo usermod -aG docker $user
 sudo newgrp docker
 su $user
-echo "硬盘挂载，smb共享，硬链接,docker安装已完成，请输入sudo reboot"
+echo "硬盘挂载，smb共享，硬链接,docker安装已完成，请输入sudo reboot以重启"
