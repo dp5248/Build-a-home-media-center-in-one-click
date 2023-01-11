@@ -4,7 +4,6 @@ sudo curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
 user=`ls /home`
 sudo usermod -aG docker $user
 sudo newgrp docker
-chmod +x docker.sh
 id=`ls /home`
 su $id
 
