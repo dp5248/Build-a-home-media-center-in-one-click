@@ -14,7 +14,7 @@ EOF
 sudo apt update && sudo apt upgrade -y
 
 #安装基本工具
-sudo apt install -y vim curl npm samba nfs-common nfs-kernel-server nfs-common
+sudo apt install -y vim npm samba
 
 #挂载硬盘并创建smb共享
 sudo chown 1000:1000 -R /mnt
