@@ -14,12 +14,12 @@ EOF
 sudo apt update && sudo apt upgrade -y
 
 #安装基本工具
-sudo apt install -y vim npm samba
+sudo apt install -y vim npm samba nfs-common nfs-kernel-server nfs-common
 
 #挂载硬盘并创建smb共享
 sudo chown 1000:1000 -R /mnt
 sudo chmod 777 /etc/fstab
-mkdir ~/ZJ
+mkdir ~/ZJ -p
 pw1=({a..z})
 xtp=`df -h | grep /boot | cut -b 8`
 pw=( ${pw1[*]/$xtp} )
@@ -38,9 +38,9 @@ do
         b2=`sudo blkid | grep -oP "(?<=(/dev/sd$var)).*" | cut -d" " -f4 | cut -c 7-10`
         sudo echo UUID=$b1 /mnt/$b0 $b2 defaults 0 0 >> /etc/fstab
         printf "%s [$b0]\n comment = $b0\n path = /mnt/$b0\n read only = no\n browsable = yes\n public = yes\n available = yes\n writable = yes\n" | sudo tee /etc/samba/smb.conf -a > /dev/null
-        echo "-v /mnt/$b0/qb:/$b0 \\" | tee ~/ZJ/QB -a > /dev/null
-        echo "-v /mnt/$b0/qb:/$b0 \\" | tee ~/ZJ/QB -a > /dev/null
-        echo "-v /mnt/$b0/qb:/$b0 \\" | tee ~/ZJ/QB -a > /dev/null
+        echo "-v /mnt/$b0/qb:/$b0 \\" | tee ~/ZJ/QB.txt -a > /dev/null
+        echo "-v /mnt/$b0/qb:/$b0 \\" | tee ~/ZJ/QB.txt -a > /dev/null
+        echo "-v /mnt/$b0/qb:/$b0 \\" | tee ~/ZJ/QB.txt -a > /dev/null
         else echo '本操作没挂载该硬盘';fi
         fi
 done
@@ -52,7 +52,7 @@ user=`ls /home`
 sudo smbpasswd -a $user
 
 read -p "刚刚输入的密码为:" smbmm
-echo "你的SMB用户名为`ls /home`，密码为$smbmm" >> ~/ZJ/note -a
+echo "你的SMB用户名为`ls /home`，密码为$smbmm" >> ~/ZJ/note.txt
 
 #改host方便nastools识别
 sudo tee /etc/hosts -a > /dev/null <<-'EOF'
@@ -130,8 +130,8 @@ EOF
 sudo cp ~/ZJ/hlinkhj.sh /etc/init.d/
 sudo chmod 750 /etc/init.d/hlinkhj.sh
 sudo update-rc.d hlinkhj.sh defaults
-sudo chown 1000:1000 -R ~/ZJ/ && sudo chmod 777 -R ~/ZJ/
-cat ~/ZJ/note
+cat ~/ZJ/note.txt
+
 read -p "以下为安装docker和推荐容器，不需要请输入n，需要请直接回车:" do
 if [ $do = n ];then
 echo "硬盘挂载，smb共享，硬链接已完成，请输入sudo reboot"
@@ -140,8 +140,7 @@ fi
 
 #安装docker
 sudo curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
+echo "硬盘挂载，smb共享，硬链接,docker安装已完成，请输入sudo reboot以重启"
 user=`ls /home`
 sudo usermod -aG docker $user
 sudo newgrp docker
-su $user
-echo "硬盘挂载，smb共享，硬链接,docker安装已完成，请输入sudo reboot以重启"
