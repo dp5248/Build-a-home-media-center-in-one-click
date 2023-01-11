@@ -141,11 +141,3 @@ sudo usermod -aG docker $user
 sudo newgrp docker
 su $user
 echo "硬盘挂载，smb共享，硬链接,docker已完成，请输入sudo reboot"
-
-#安装docker
-sudo curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
-user=`ls /home`
-sudo usermod -aG docker $user
-sudo newgrp docker
-su $user
-echo "硬盘挂载，smb共享，硬链接,docker已完成，请输入sudo reboot"
