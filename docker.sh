@@ -1,6 +1,7 @@
 #!/bin/bash
 #用户输入docker设置文件的路径
 read -p "请输入/mnt下面的一个文件夹名称（最好是挂载了硬盘的），用于存放docker的设置文件：" wj
+mkdir /mnt/$wj -p
 
 #基础容器
 #Portainer
