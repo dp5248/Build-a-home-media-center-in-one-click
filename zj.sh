@@ -14,7 +14,7 @@ EOF
 sudo apt update && sudo apt upgrade -y
 
 #安装基本工具
-sudo apt install -y vim npm samba nfs-common nfs-kernel-server nfs-common
+sudo apt install -y vim npm samba
 
 #挂载硬盘并创建smb共享
 sudo chown 1000:1000 -R /mnt
@@ -38,8 +38,8 @@ do
         b2=`sudo blkid | grep -oP "(?<=(/dev/sd$var)).*" | cut -d" " -f4 | cut -c 7-10`
         sudo echo UUID=$b1 /mnt/$b0 $b2 defaults 0 0 >> /etc/fstab
         printf "%s [$b0]\n comment = $b0\n path = /mnt/$b0\n read only = no\n browsable = yes\n public = yes\n available = yes\n writable = yes\n" | sudo tee /etc/samba/smb.conf -a > /dev/null
-        echo "-v /mnt/$b0/qb:/$b0 \\" | tee ~/ZJ/QB.txt -a > /dev/null
-        echo "-v /mnt/$b0/qb:/$b0 \\" | tee ~/ZJ/QB.txt -a > /dev/null
+        echo "-v /mnt/$b0/qs:/$b0 \\" | tee ~/ZJ/QS.txt -a > /dev/null
+        echo "-v /mnt/$b0/qp:/$b0 \\" | tee ~/ZJ/QP.txt -a > /dev/null
         echo "-v /mnt/$b0/qb:/$b0 \\" | tee ~/ZJ/QB.txt -a > /dev/null
         else echo '本操作没挂载该硬盘';fi
         fi
