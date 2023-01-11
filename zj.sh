@@ -19,6 +19,7 @@ sudo apt install -y vim curl npm samba nfs-common nfs-kernel-server nfs-common
 #挂载硬盘并创建smb共享
 sudo chown 1000:1000 -R /mnt
 sudo chmod 777 /etc/fstab
+mkdir ~/ZJ
 pw1=({a..z})
 xtp=`df -h | grep /boot | cut -b 8`
 pw=( ${pw1[*]/$xtp} )
