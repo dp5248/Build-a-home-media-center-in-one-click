@@ -26,7 +26,8 @@ docker run -d \
 portainer/portainer-ce
 echo "portainer端口号为9000" >> /mnt/Z/note -a
 fi
-else echo "不安装portainer";fi
+else echo "不安装portainer"
+fi
 
 #Filebrower
 read -p "是否需要安装filebrowser（用途：方便管理文件）(y/n):" fb
