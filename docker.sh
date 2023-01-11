@@ -14,7 +14,7 @@ docker run -d \
 -v /var/run/docker.sock:/var/run/docker.sock \
 -v /mnt/$wj/docker/portainer:/data \
 6053537/portainer-ce
-echo "portainer端口号为9000" >> ~/ZJ/note -a
+echo "portainer端口号为9000" >> ~/ZJ/note.txt
 else echo "不安装portainer";fi
 
 #Filebrower
@@ -32,7 +32,7 @@ docker run -d \
 -v /mnt:/myfiles \
 -v /mnt/$wj/docker/fb:/config \
 80x86/filebrowser
-echo "filebrowser端口号为8092,默认用户名为admin，默认密码为admin" >> ~/ZJ/note -a
+echo "filebrowser端口号为8092,默认用户名为admin，默认密码为admin" >> ~/ZJ/note.txt
 else echo "不安装filebrowser";fi
 
 #PT相关
@@ -47,7 +47,7 @@ docker run -d \
 -e TZ=Asia/Shanghai \
 lswl/vertex:stable
 vtmm=`cat /mnt/$wj/docker/vertex/data/password`
-echo "vertex端口号为11160,用户名为admin,密码为$vtmm" >> ~/ZJ/note -a
+echo "vertex端口号为11160,用户名为admin,密码为$vtmm" >> ~/ZJ/note.txt
 else echo "不安装vertex";fi
 
 #QS
@@ -55,28 +55,28 @@ echo "注意：QB和TR的安装需要先运行前置的zj.sh，否则没有做�
 read -p "是否需要安装刷流QB（用途：专门用于刷流的QB）(y/n):" qs
 if [ $qs = y ];then
 echo '#!/bin/bash' >> ~/ZJ/QS.sh
-printf "docker run -d --name QS --restart=always --network=host -e WEB_PORT=11161 -e BT_PORT=38661 -e PUID=1000 -e PGID=1000 -v /mnt/$wj/docker/QS/config:/config -v /mnt/$wj/docker/QS/data:/data `cat ~/ZJ/QS`" >> ~/ZJ/QS.sh
+printf "docker run -d --name QS --restart=always --network=host -e WEB_PORT=11161 -e BT_PORT=38661 -e PUID=1000 -e PGID=1000 -v /mnt/$wj/docker/QS/config:/config -v /mnt/$wj/docker/QS/data:/data `cat ~/ZJ/QS.txt`" >> ~/ZJ/QS.sh
 printf "\n80x86/qbittorrent:4.3.5-alpine-3.13.5-amd64-full" >> ~/ZJ/QS.sh
 chmod +x ~/ZJ/QS.sh
 sh ~/ZJ/QS.sh
 cd /mnt/$wj/docker/QS/config
 find -name 'qBittorrent.conf' | xargs perl -pi -e 's|WebUI\HTTPS\Enabled=true|WebUI\HTTPS\Enabled=false|g'
 docker restart QS
-echo "刷流QB端口号为11161，默认用户名为admin,默认密码为adminadmin" >> ~/ZJ/note -a
+echo "刷流QB端口号为11161，默认用户名为admin,默认密码为adminadmin" >> ~/ZJ/note.txt
 else echo "不安装刷流QB";fi
 
 #QP
-read -p "是否需要安装片库QB（用途：专门用于刷流的QB）(y/n):" qp
+read -p "是否需要安装片库QB（用途：专门用于下片的QB）(y/n):" qp
 if [ $qp = y ];then
 echo '#!/bin/bash' >> ~/ZJ/QS.sh
-printf "docker run -d --name QP --restart=always --network=host -e WEB_PORT=11170 -e BT_PORT=38670 -e PUID=1000 -e PGID=1000 -v /mnt/$wj/docker/QP/config:/config -v /mnt/$wj/docker/QP/data:/data `cat ~/ZJ/QP`" >> ~/ZJ/QP.sh
+printf "docker run -d --name QP --restart=always --network=host -e WEB_PORT=11170 -e BT_PORT=38670 -e PUID=1000 -e PGID=1000 -v /mnt/$wj/docker/QP/config:/config -v /mnt/$wj/docker/QP/data:/data `cat ~/ZJ/QP.txt`" >> ~/ZJ/QP.sh
 printf "\n80x86/qbittorrent:4.3.5-alpine-3.13.5-amd64-full" >> ~/ZJ/QP.sh
 chmod +x ~/ZJ/QP.sh
 sh ~/ZJ/QP.sh
 cd /mnt/$wj/docker/QP/config
 find -name 'qBittorrent.conf' | xargs perl -pi -e 's|WebUI\HTTPS\Enabled=true|WebUI\HTTPS\Enabled=false|g'
 docker restart QP
-echo "片库QB端口号为11170，默认用户名为admin,默认密码为adminadmin" >> ~/ZJ/note -a
+echo "片库QB端口号为11170，默认用户名为admin,默认密码为adminadmin" >> ~/ZJ/note.txt
 else echo "不安装片库QB";fi
 
 #TP
@@ -85,25 +85,25 @@ if [ $tp = y ];then
 read -p "该TR的用户名设置为：" tp1
 read -p "该TR的密码设置为：" tp2
 echo '#!/bin/bash' >> ~/ZJ/TP.sh
-printf "docker run -d --name TP --restart=always --network=host -e RPCPORT=11171 -e PEERPORT=38671 -e TR_USER=$tp1 -e TR_PASS=$tp2 -e PUID=1000 -e PGID=1000 -e TZ=Asia/Shanghai -v /mnt/$wj/docker/TP/config:/config -v /mnt/$wj/docker/TP/watch:/watch `cat ~/ZJ/QP`" >> ~/ZJ/TP.sh
+printf "docker run -d --name TP --restart=always --network=host -e RPCPORT=11171 -e PEERPORT=38671 -e TR_USER=$tp1 -e TR_PASS=$tp2 -e PUID=1000 -e PGID=1000 -e TZ=Asia/Shanghai -v /mnt/$wj/docker/TP/config:/config -v /mnt/$wj/docker/TP/watch:/watch `cat ~/ZJ/QP.txt`" >> ~/ZJ/TP.sh
 printf "\ndocker.io/chisbread/transmission:version-3.00-r13" >> ~/ZJ/TP.sh
 chmod +x ~/ZJ/TP.sh
 sh ~/ZJ/TP.sh
-echo "片库TR端口号为11171,用户名为$tp1,密码为$tp2" >> ~/ZJ/note -a
+echo "片库TR端口号为11171,用户名为$tp1,密码为$tp2" >> ~/ZJ/note.txt
 else echo "不安装片库TR";fi
 
 #QB
 read -p "是否需要安装保种QB（用途：与片库QB独立）(y/n):" qb
 if [ $qb = y ];then
 echo '#!/bin/bash' >> ~/ZJ/QB.sh
-printf "docker run -d --name QB --restart=always --network=host -e WEB_PORT=11180 -e BT_PORT=38680 -e PUID=1000 -e PGID=1000 -v /mnt/$wj/docker/QB/config:/config -v /mnt/$wj/docker/QB/data:/data `cat ~/ZJ/QB`" >> ~/ZJ/QB.sh
+printf "docker run -d --name QB --restart=always --network=host -e WEB_PORT=11180 -e BT_PORT=38680 -e PUID=1000 -e PGID=1000 -v /mnt/$wj/docker/QB/config:/config -v /mnt/$wj/docker/QB/data:/data `cat ~/ZJ/QB.txt`" >> ~/ZJ/QB.sh
 printf "\n80x86/qbittorrent:4.3.5-alpine-3.13.5-amd64-full" >> ~/ZJ/QB.sh
 chmod +x ~/ZJ/QB.sh
 sh ~/ZJ/QB.sh
 cd /mnt/$wj/docker/QB/config
 find -name 'qBittorrent.conf' | xargs perl -pi -e 's|WebUI\HTTPS\Enabled=true|WebUI\HTTPS\Enabled=false|g'
 docker restart QB
-echo "保种QB端口号为11180，默认用户名为admin,默认密码为adminadmin" >> ~/ZJ/note -a
+echo "保种QB端口号为11180，默认用户名为admin,默认密码为adminadmin" >> ~/ZJ/note.txt
 else echo "不安装保种QB";fi
 
 #TR
@@ -112,11 +112,11 @@ if [ $tr = y ];then
 read -p "该TR的用户名设置为：" tr1
 read -p "该TR的密码设置为：" tr2
 echo '#!/bin/bash' >> ~/ZJ/TP.sh
-printf "docker run -d --name TP --restart=always --network=host -e RPCPORT=11171 -e PEERPORT=38671 -e TR_USER=$tr1 -e TR_PASS=$tr2 -e PUID=1000 -e PGID=1000 -e TZ=Asia/Shanghai -v /mnt/$wj/docker/TP/config:/config -v /mnt/$wj/docker/TP/watch:/watch `cat ~/ZJ/QP`" >> ~/ZJ/TR.sh
+printf "docker run -d --name TP --restart=always --network=host -e RPCPORT=11171 -e PEERPORT=38671 -e TR_USER=$tr1 -e TR_PASS=$tr2 -e PUID=1000 -e PGID=1000 -e TZ=Asia/Shanghai -v /mnt/$wj/docker/TP/config:/config -v /mnt/$wj/docker/TP/watch:/watch `cat ~/ZJ/QB.txt`" >> ~/ZJ/TR.sh
 printf "\ndocker.io/chisbread/transmission:version-3.00-r13" >> ~/ZJ/TR.sh
 chmod +x ~/ZJ/TR.sh
 sh ~/ZJ/TR.sh
-echo "片库TR端口号为11181,用户名为$tr1,密码为$tr2" >> ~/ZJ/note -a
+echo "片库TR端口号为11181,用户名为$tr1,密码为$tr2" >> ~/ZJ/note.txt
 else echo "不安装保种TR";fi
 
 #IYUU
@@ -133,7 +133,7 @@ docker run -d \
 -v /mnt/$wj/docker/QB/data/BT_backup/:/QB \
 -v /mnt/$wj/docker/TR/config/torrents/:/TR \
 iyuucn/iyuuplus
-echo "IYUU端口号为8787,打开https://iyuu.cn/，点击开始使用，并微信扫码，获得爱语飞飞TOKEN，密码为空，第一次输入时你可以自由设置你的密码；以后密码与第一次相同才能登录" >> ~/ZJ/note -a
+echo "IYUU端口号为8787,打开https://iyuu.cn/，点击开始使用，并微信扫码，获得爱语飞飞TOKEN，密码为空，第一次输入时你可以自由设置你的密码；以后密码与第一次相同才能登录" >> ~/ZJ/note.txt
 else echo "不安装IYUU";fi
 
 #相关服务
@@ -146,7 +146,7 @@ docker run -d \
 --net=host \
 -v /mnt/$wj/docker/ddns:/root \
 jeessy/ddns-go
-echo "ddns-go端口号为9876" >> ~/ZJ/note -a
+echo "ddns-go端口号为9876" >> ~/ZJ/note.txt
 else echo "不安装ddns-go";fi
 
 #NPM
@@ -161,7 +161,7 @@ docker run -d \
 -v /mnt/$wj/docker/npm:/config:rw \
 -p 8181:8181 -p 1880:8080 -p443:4443 \
 jlesage/nginx-proxy-manager:latest
-echo "npm端口为8181，记得去路由器做端口映射，内网ip为nas的ip，端口为443" >> ~/ZJ/note -a
+echo "npm端口为8181，记得去路由器做端口映射，内网ip为nas的ip，端口为443" >> ~/ZJ/note.txt
 else echo "不安装npm";fi
 
 #VWD
@@ -174,7 +174,7 @@ docker run -d \
 -v /mnt/$wj/docker/vwd:/data \
 -p 11190:80 \
 vaultwarden/server:latest
-echo "bitwarden端口为11190，先设置好反向代理后去再设置bwd" >> ~/ZJ/note -a
+echo "bitwarden端口为11190，先设置好反向代理后去再设置bwd" >> ~/ZJ/note.txt
 else echo "不安装bitwarden";fi
 
 #Heimdall
@@ -190,7 +190,7 @@ docker run -d \
 -v /mnt/$wj/docker/hm:/config \
 --restart unless-stopped \
 lscr.io/linuxserver/heimdall:latest
-echo "heimdall端口为11191" >> ~/ZJ/note -a
+echo "heimdall端口为11191" >> ~/ZJ/note.txt
 else echo "不安装heimdall";fi
 
 #备份相关
@@ -208,7 +208,7 @@ docker run -d \
 -e MYSQL_DATABASE=nextcloud \
 -p 3306:3306 \
 mysql
-echo "mysql的端口为3306，用户名为nextcloud，密码和root密码都是$mysql" >> ~/ZJ/note -a
+echo "mysql的端口为3306，用户名为nextcloud，密码和root密码都是$mysql" >> ~/ZJ/note.txt
 else echo "不安装mysql";fi
 
 #Nextcloud
@@ -221,7 +221,7 @@ docker run -d \
 -p 11200:80 \
 --link mysql:mysql \
 nextcloud
-echo "nextcloud端口为11120" >> ~/ZJ/note -a
+echo "nextcloud端口为11120" >> ~/ZJ/note.txt
 else echo "不安装nextcloud";fi
 
 #片库相关
@@ -229,19 +229,22 @@ else echo "不安装nextcloud";fi
 read -p "是否安装nastools（用途：自动化片库和刷流等）(y/n):" nt
 if [ $nt = y ];then
 echo '#!/bin/bash' >> ~/ZJ/NT.sh
-printf "docker run -d --name nastools --net=host --hostname nas-tools -e TZ="Asia/Shanghai" -e PUID=1000 -e PGID=1000 -e UMASK=022 -e NASTOOL_AUTO_UPDATE=true -v/mnt/$wj/docker/nt:/config `cat ~/ZJ/QP`" >> ~/ZJ/NT.sh
+printf "docker run -d --name nastools --net=host --hostname nas-tools -e TZ="Asia/Shanghai" -e PUID=1000 -e PGID=1000 -e UMASK=022 -e NASTOOL_AUTO_UPDATE=true -v/mnt/$wj/docker/nt:/config `cat ~/ZJ/QP.txt`" >> ~/ZJ/NT.sh
 printf "\njxxghp/nas-tools:latest" >> ~/ZJ/NT.sh
 chmod +x ~/ZJ/NT.sh
 sh ~/ZJ/NT.sh
-echo "nastool端口为3000，默认用户名是admin，默认密码是password" >> ~/ZJ/note -a
+echo "nastool端口为3000，默认用户名是admin，默认密码是password" >> ~/ZJ/note.txt
 else echo "不安装nastools";fi
 
 #Chinesesubfinder
 echo '#!/bin/bash' >> ~/ZJ/ZIMU.sh
-printf "docker run -itd --name zimu --restart=unless-stopped --net=host -e PUID=1000 -e PGID=1000 -e TZ=Asia/Shanghai -v /mnt/$wj/docker/zimu/config:/config -v /mnt/$wh/docker/zimu/cache:/app/cache -v /mnt/$wj/docker/zimu/brower:/root/.cache/rod/brower `cat ~/ZJ/QP`" >> ~/ZJ/ZIMU.sh
+printf "docker run -itd --name zimu --restart=unless-stopped --net=host -e PUID=1000 -e PGID=1000 -e TZ=Asia/Shanghai -v /mnt/$wj/docker/zimu/config:/config -v /mnt/$wh/docker/zimu/cache:/app/cache -v /mnt/$wj/docker/zimu/brower:/root/.cache/rod/brower `cat ~/ZJ/QP.txt`" >> ~/ZJ/ZIMU.sh
 printf "\nallanpk716/chinesesubfinder:latest" >> ~/ZJ/ZIMU.sh
-pirntf "\necho Chineseubfinder的端口为19035 >> ~/ZJ/note -a" >> ~/ZJ/ZIMU.sh
+printf "\nsed '/ssh/d' ~/ZJ/note.txt | tee ~/ZJ/note.txt" >> ~/ZJ/ZIMU.sh
+printf "\nsed '/cat ~/ZJ/note.txt/d' ~/ZJ/note.txt | tee ~/ZJ/note.txt" >> ~/ZJ/ZIMU.sh
+pirntf "\necho Chineseubfinder的端口为19035 >> ~/ZJ/note.txt" >> ~/ZJ/ZIMU.sh
+printf "echo 以后需要查看本次装机相关内容请输入cat ~/ZJ/note.txt可查看（这句指令建议记录好） >> ~/ZJ/note.txt" >> ~/ZJ/ZIMU.sh
 chmod +x ~/ZJ/ZIMU.sh
-echo "请设置好nastools后，在ssh窗口输入sh ~/ZJ/ZIMU.sh以安装ChineseSubFinder" >> ~/ZJ/note -a
-echo "以后需要查看本次装机相关内容请输入cat ~/ZJ/note可查看（这句指令建议记录好）" >> ~/ZJ/note -a
-cat ~/ZJ/note
+echo "请设置好nastools后，在ssh窗口输入sh ~/ZJ/ZIMU.sh以安装ChineseSubFinder" >> ~/ZJ/note.txt
+echo "以后需要查看本次装机相关内容请输入cat ~/ZJ/note.txt可查看（这句指令建议记录好）" >> ~/ZJ/note.txt
+cat ~/ZJ/note.txt
