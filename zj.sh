@@ -18,7 +18,6 @@ sudo apt install -y vim curl npm samba nfs-common nfs-kernel-server nfs-common
 
 #挂载硬盘并创建smb共享
 sudo chown 1000:1000 -R /mnt
-mkdir /mnt/Z -p
 sudo chmod 777 /etc/fstab
 for var in sd{b..z}
 do
@@ -35,9 +34,9 @@ do
         b2=`sudo blkid | grep -oP "(?<=(/dev/$var)).*" | cut -d" " -f4 | cut -c 7-10`
         sudo echo UUID=$b1 /mnt/$b0 $b2 defaults 0 0 >> /etc/fstab
         printf "%s [$b0]\n comment = $b0\n path = /mnt/$b0\n read only = no\n browsable = yes\n public = yes\n available = yes\n writable = yes\n" | sudo tee /etc/samba/smb.conf -a > /dev/null
-        printf %s "-v /mnt/$b0/qs:/$b0 \\" >> /mnt/Z/QS
-        printf %s "-v /mnt/$b0/pk:/$b0 \\" >> /mnt/Z/QP
-        printf %s "-v /mnt/$b0/qb:/$b0 \\" >> /mnt/Z/QB
+        printf %s "-v /mnt/$b0/qs:/$b0 \\" >> ~/ZJ/QS
+        printf %s "-v /mnt/$b0/pk:/$b0 \\" >> ~/ZJ/QP
+        printf %s "-v /mnt/$b0/qb:/$b0 \\" >> ~/ZJ/QB
         else echo '本操作没挂载该硬盘';fi
         fi
 done
@@ -49,7 +48,7 @@ user=`ls /home`
 sudo smbpasswd -a $user
 
 read -p "刚刚输入的密码为:" smbmm
-echo "你的SMB用户名为`ls /home`，密码为$smbmm" >> /mnt/Z/note -a
+echo "你的SMB用户名为`ls /home`，密码为$smbmm" >> ~/ZJ/note -a
 
 #改host方便nastools识别
 sudo tee /etc/hosts -a > /dev/null <<-'EOF'
@@ -61,15 +60,15 @@ sudo tee /etc/hosts -a > /dev/null <<-'EOF'
 EOF
 
 #硬链接hlink，需要作为另外并以root运行
-cd /mnt/Z
+cd ~/ZJ
 wget https://nodejs.org/dist/v16.16.0/node-v16.16.0-linux-x64.tar.xz
 mv node-v16.16.0-linux-x64.tar.xz node.tar.gz
-tar -xvf /mnt/Z/node.tar.gz
+tar -xvf ~/ZJ/node.tar.gz
 mv node-v16.16.0-linux-x64 node
-sudo ln -s /mnt/Z/node/bin/npm /usr/local/bin/
-sudo ln -s /mnt/Z/node/bin/node /usr/local/bin/
+sudo ln -s ~/ZJ/node/bin/npm /usr/local/bin/
+sudo ln -s ~/ZJ/node/bin/node /usr/local/bin/
 npm install -g hlink
-sudo ln -s /mnt/Z/node/bin/hlink /usr/local/bin/
+sudo ln -s ~/ZJ/node/bin/hlink /usr/local/bin/
 sudo tee /root/hlink.config.mjs > /dev/null <<-'EOB'
 // 重要说明路径地址都请填写 绝对路径！！！！
 export default {
@@ -115,25 +114,33 @@ export default {
   mkdirIfSingle: true,
 }
 EOB
-sudo cp /root/hlink.config.mjs /mnt/Z/hlink.config.mjs
+sudo cp /root/hlink.config.mjs ~/ZJ/hlink.config.mjs
 
-tee /mnt/Z/hlinkhj.sh > /dev/null <<-'EOF'
+tee ~/ZJ/hlinkhj.sh > /dev/null <<-'EOF'
 #! /bin/bash
-ln -s /mnt/Z/node/bin/npm /usr/local/bin/
-ln -s /mnt/Z/node/bin/node /usr/local/bin/
-ln -s /mnt/Z/node/bin/hlink /usr/local/bin/
-ln -s /mnt/Z/hlink.config.mjs /root/hlink.config.mjs
+ln -s ~/ZJ/node/bin/npm /usr/local/bin/
+ln -s ~/ZJ/node/bin/node /usr/local/bin/
+ln -s ~/ZJ/node/bin/hlink /usr/local/bin/
+ln -s ~/ZJ/hlink.config.mjs /root/hlink.config.mjs
 EOF
-sudo cp /mnt/Z/hlinkhj.sh /etc/init.d/
+sudo cp ~/ZJ/hlinkhj.sh /etc/init.d/
 sudo chmod 750 /etc/init.d/hlinkhj.sh
 sudo update-rc.d hlinkhj.sh defaults
-sudo chown 1000:1000 -R /mnt/Z/ && sudo chmod 777 -R /mnt/Z/
-cat /mnt/Z/note
+sudo chown 1000:1000 -R ~/ZJ/ && sudo chmod 777 -R ~/ZJ/
+cat ~/ZJ/note
 read -p "以下为安装docker和推荐容器，不需要请输入n，需要请直接回车:" do
 if [ $do = n ];then
 echo "硬盘挂载，smb共享，硬链接已完成，请输入sudo reboot"
 exit
 fi
+
+#安装docker
+sudo curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
+user=`ls /home`
+sudo usermod -aG docker $user
+sudo newgrp docker
+su $user
+echo "硬盘挂载，smb共享，硬链接,docker已完成，请输入sudo reboot"
 
 #安装docker
 sudo curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
