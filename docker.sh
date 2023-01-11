@@ -6,8 +6,6 @@ read -p "请输入/mnt下面的一个文件夹名称（最好是挂载了硬盘�
 #Portainer
 read -p "是否需要安装portainer（用途：方便管理容器）(y/n):" po
 if [ $po = y ];then
-read -p "安装中文版输入y，安装官方版（英文）输入n：" bb
-if [ $bb = y ];then
 docker run -d \
 --name portainer \
 --restart=always \
@@ -16,18 +14,7 @@ docker run -d \
 -v /mnt/$wj/docker/portainer:/data \
 6053537/portainer-ce
 echo "portainer端口号为9000" >> /mnt/Z/note -a
-else if [ $bb = n ];then
-docker run -d \
---name portainer \
---restart=always \
--p 9000:9000 \
--v /var/run/docker.sock:/var/run/docker.sock \
--v /mnt/$wj/docker/portainer:/data \
-portainer/portainer-ce
-echo "portainer端口号为9000" >> /mnt/Z/note -a
-fi
-else echo "不安装portainer"
-fi
+else echo "不安装portainer";fi
 
 #Filebrower
 read -p "是否需要安装filebrowser（用途：方便管理文件）(y/n):" fb
