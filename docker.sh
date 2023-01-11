@@ -1,11 +1,7 @@
 #!/bin/bash
-#安装docker
-sudo curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
 user=`ls /home`
 sudo usermod -aG docker $user
 sudo newgrp docker
-id=`ls /home`
-su $id
 
 #用户输入docker设置文件的路径
 read -p "请输入/mnt下面的一个文件夹名称（最好是挂载了硬盘的），用于存放docker的设置文件：" wj
