@@ -33,7 +33,6 @@ do
         mkdir /mnt/$b0 -p
         b1=`sudo blkid | grep -oP "(?<=(/dev/$var)).*" | cut -d" " -f2 | cut -c 7-42`
         b2=`sudo blkid | grep -oP "(?<=(/dev/$var)).*" | cut -d" " -f4 | cut -c 7-10`
-
         sudo echo UUID=$b1 /mnt/$b0 $b2 defaults 0 0 >> /etc/fstab
         printf "%s [$b0]\n comment = $b0\n path = /mnt/$b0\n read only = no\n browsable = yes\n public = yes\n available = yes\n writable = yes\n" | sudo tee /etc/samba/smb.conf -a > /dev/null
         printf %s "-v /mnt/$b0/qs:/$b0 \\" >> /mnt/Z/QS
@@ -130,4 +129,16 @@ sudo chmod 750 /etc/init.d/hlinkhj.sh
 sudo update-rc.d hlinkhj.sh defaults
 sudo chown 1000:1000 -R /mnt/Z/ && sudo chmod 777 -R /mnt/Z/
 cat /mnt/Z/note
+read -p "以下为安装docker和推荐容器，不需要请输入n，需要请直接回车:" do
+if [ $do = n ];then
 echo "硬盘挂载，smb共享，硬链接已完成，请输入sudo reboot"
+exit
+fi
+
+#安装docker
+sudo curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
+user=`ls /home`
+sudo usermod -aG docker $user
+sudo newgrp docker
+su $user
+echo "硬盘挂载，smb共享，硬链接,docker已完成，请输入sudo reboot"
