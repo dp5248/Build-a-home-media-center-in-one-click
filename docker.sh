@@ -1,9 +1,4 @@
 #!/bin/bash
-read -p "以下为安装docker和推荐容器，不需要请输入n，需要请直接回车:" do
-if [ $do = n ];then
-exit
-fi
-
 #安装docker
 sudo curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
 user=`ls /home`
