@@ -38,9 +38,9 @@ do
         b2=`sudo blkid | grep -oP "(?<=(/dev/sd$var)).*" | cut -d" " -f4 | cut -c 7-10`
         sudo echo UUID=$b1 /mnt/$b0 $b2 defaults 0 0 >> /etc/fstab
         printf "%s [$b0]\n comment = $b0\n path = /mnt/$b0\n read only = no\n browsable = yes\n public = yes\n available = yes\n writable = yes\n" | sudo tee /etc/samba/smb.conf -a > /dev/null
-        printf %s "-v /mnt/$b0/qs:/$b0 \\" >> ~/ZJ/QS
-        printf %s "-v /mnt/$b0/pk:/$b0 \\" >> ~/ZJ/QP
-        printf %s "-v /mnt/$b0/qb:/$b0 \\" >> ~/ZJ/QB
+        echo "-v /mnt/$b0/qb:/$b0 \\" | tee ~/ZJ/QB -a > /dev/null
+        echo "-v /mnt/$b0/qb:/$b0 \\" | tee ~/ZJ/QB -a > /dev/null
+        echo "-v /mnt/$b0/qb:/$b0 \\" | tee ~/ZJ/QB -a > /dev/null
         else echo '本操作没挂载该硬盘';fi
         fi
 done
