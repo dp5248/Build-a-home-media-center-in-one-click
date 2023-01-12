@@ -14,6 +14,7 @@ EOF
 sudo apt update && sudo apt upgrade -y
 
 #安装基本工具
+sleep 5
 sudo apt install -y vim npm samba
 
 #挂载硬盘并创建smb共享
