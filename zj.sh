@@ -45,6 +45,7 @@ do
         fi
 done
 sudo chmod 644 /etc/fstab
+sudo chown 1000:1000 -R /mnt
 
 #重启smb并设置smb密码
 sudo service smbd restart
