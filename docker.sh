@@ -60,7 +60,7 @@ printf "docker run -d --name QS --restart=always --network=host -e WEB_PORT=1116
 printf "\n80x86/qbittorrent:4.3.5-alpine-3.13.5-amd64-full" >> ~/ZJ/QS.sh
 chmod +x ~/ZJ/QS.sh
 sh ~/ZJ/QS.sh
-sleep 10
+sleep 5
 cd /mnt/$wj/docker/QS/config
 find -name 'qBittorrent.conf' | xargs perl -pi -e 's|WebUI\HTTPS\Enabled=true|WebUI\HTTPS\Enabled=false|g'
 docker restart QS
@@ -75,7 +75,7 @@ printf "docker run -d --name QP --restart=always --network=host -e WEB_PORT=1117
 printf "\n80x86/qbittorrent:4.3.5-alpine-3.13.5-amd64-full" >> ~/ZJ/QP.sh
 chmod +x ~/ZJ/QP.sh
 sh ~/ZJ/QP.sh
-sleep 10
+sleep 5
 cd /mnt/$wj/docker/QP/config
 find -name 'qBittorrent.conf' | xargs perl -pi -e 's|WebUI\HTTPS\Enabled=true|WebUI\HTTPS\Enabled=false|g'
 docker restart QP
@@ -103,7 +103,7 @@ printf "docker run -d --name QB --restart=always --network=host -e WEB_PORT=1118
 printf "\n80x86/qbittorrent:4.3.5-alpine-3.13.5-amd64-full" >> ~/ZJ/QB.sh
 chmod +x ~/ZJ/QB.sh
 sh ~/ZJ/QB.sh
-sleep 10
+sleep 5
 cd /mnt/$wj/docker/QB/config
 find -name 'qBittorrent.conf' | xargs perl -pi -e 's|WebUI\HTTPS\Enabled=true|WebUI\HTTPS\Enabled=false|g'
 docker restart QB
@@ -246,7 +246,7 @@ printf "docker run -itd --name zimu --restart=unless-stopped --net=host -e PUID=
 printf "\nallanpk716/chinesesubfinder:latest" >> ~/ZJ/ZIMU.sh
 printf "\nsed '/ssh/d' ~/ZJ/note.txt | tee ~/ZJ/note.txt" >> ~/ZJ/ZIMU.sh
 printf "\nsed '/cat ~/ZJ/note.txt/d' ~/ZJ/note.txt | tee ~/ZJ/note.txt" >> ~/ZJ/ZIMU.sh
-pirntf "\necho Chineseubfinder的端口为19035 >> ~/ZJ/note.txt" >> ~/ZJ/ZIMU.sh
+printf "\necho Chineseubfinder的端口为19035 >> ~/ZJ/note.txt" >> ~/ZJ/ZIMU.sh
 printf "\necho 以后需要查看本次装机相关内容请输入cat ~/ZJ/note.txt可查看（这句指令建议记录好） >> ~/ZJ/note.txt" >> ~/ZJ/ZIMU.sh
 chmod +x ~/ZJ/ZIMU.sh
 echo "请设置好nastools后，在ssh窗口输入sh ~/ZJ/ZIMU.sh以安装ChineseSubFinder" >> ~/ZJ/note.txt
