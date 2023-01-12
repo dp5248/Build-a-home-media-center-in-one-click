@@ -132,12 +132,6 @@ sudo chmod 750 /etc/init.d/hlinkhj.sh
 sudo update-rc.d hlinkhj.sh defaults
 cat ~/ZJ/note.txt
 
-read -p "以下为安装docker和推荐容器，不需要请输入n，需要请直接回车:" do
-if [ $do = n ];then
-echo "硬盘挂载，smb共享，硬链接已完成，请输入sudo reboot"
-exit
-fi
-
 #安装docker
 sudo curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
 echo "硬盘挂载，smb共享，硬链接,docker安装已完成，请输入sudo reboot以重启"
