@@ -1,7 +1,7 @@
 #!/bin/bash
 #用户输入docker设置文件的路径
 read -p "请输入/mnt下面的一个文件夹名称（最好是挂载了硬盘的），用于存放docker的设置文件：" wj
-mkdir /mnt/$wj -p
+mkdir /mnt/$wj/docker -p
 
 #基础容器
 #Portainer
@@ -46,9 +46,8 @@ docker run -d \
 -p 11160:3000 \
 -e TZ=Asia/Shanghai \
 lswl/vertex:stable
-sleep 10
-vtmm=`cat /mnt/$wj/docker/vertex/data/password`
-echo "vertex端口号为11160,用户名为admin,密码为$vtmm" >> ~/ZJ/note.txt
+sleep 3
+echo "vertex端口号为11160,用户名为admin,密码为`sudo cat /mnt/$wj/docker/vertex/data/password`" >> ~/ZJ/note.txt
 else echo "不安装vertex";fi
 
 #QS
@@ -60,10 +59,6 @@ printf "docker run -d --name QS --restart=always --network=host -e WEB_PORT=1116
 printf "\n80x86/qbittorrent:4.3.5-alpine-3.13.5-amd64-full" >> ~/ZJ/QS.sh
 chmod +x ~/ZJ/QS.sh
 sh ~/ZJ/QS.sh
-sleep 5
-cd /mnt/$wj/docker/QS/config
-find -name 'qBittorrent.conf' | xargs perl -pi -e 's|WebUI\HTTPS\Enabled=true|WebUI\HTTPS\Enabled=false|g'
-docker restart QS
 echo "刷流QB端口号为11161，默认用户名为admin,默认密码为adminadmin" >> ~/ZJ/note.txt
 else echo "不安装刷流QB";fi
 
@@ -75,10 +70,6 @@ printf "docker run -d --name QP --restart=always --network=host -e WEB_PORT=1117
 printf "\n80x86/qbittorrent:4.3.5-alpine-3.13.5-amd64-full" >> ~/ZJ/QP.sh
 chmod +x ~/ZJ/QP.sh
 sh ~/ZJ/QP.sh
-sleep 5
-cd /mnt/$wj/docker/QP/config
-find -name 'qBittorrent.conf' | xargs perl -pi -e 's|WebUI\HTTPS\Enabled=true|WebUI\HTTPS\Enabled=false|g'
-docker restart QP
 echo "片库QB端口号为11170，默认用户名为admin,默认密码为adminadmin" >> ~/ZJ/note.txt
 else echo "不安装片库QB";fi
 
@@ -103,10 +94,6 @@ printf "docker run -d --name QB --restart=always --network=host -e WEB_PORT=1118
 printf "\n80x86/qbittorrent:4.3.5-alpine-3.13.5-amd64-full" >> ~/ZJ/QB.sh
 chmod +x ~/ZJ/QB.sh
 sh ~/ZJ/QB.sh
-sleep 5
-cd /mnt/$wj/docker/QB/config
-find -name 'qBittorrent.conf' | xargs perl -pi -e 's|WebUI\HTTPS\Enabled=true|WebUI\HTTPS\Enabled=false|g'
-docker restart QB
 echo "保种QB端口号为11180，默认用户名为admin,默认密码为adminadmin" >> ~/ZJ/note.txt
 else echo "不安装保种QB";fi
 
@@ -197,6 +184,22 @@ lscr.io/linuxserver/heimdall:latest
 echo "heimdall端口为11191" >> ~/ZJ/note.txt
 else echo "不安装heimdall";fi
 
+#片库相关
+#nastools
+read -p "是否安装nastools（用途：自动化片库和刷流等）(y/n):" nt
+if [ $nt = y ];then
+echo '#!/bin/bash' >> ~/ZJ/NT.sh
+printf "docker run -d --name nastools --net=host --hostname nas-tools -e TZ="Asia/Shanghai" -e PUID=1000 -e PGID=1000 -e UMASK=022 -e NASTOOL_AUTO_UPDATE=true -v/mnt/$wj/docker/nt:/config `cat ~/ZJ/QP.txt`" >> ~/ZJ/NT.sh
+printf "\njxxghp/nas-tools:latest" >> ~/ZJ/NT.sh
+chmod +x ~/ZJ/NT.sh
+sh ~/ZJ/NT.sh
+echo "nastool端口为3000，默认用户名是admin，默认密码是password" >> ~/ZJ/note.txt
+else echo "不安装nastools";fi
+
+#改属主和属组
+chown 1000:1000 -R /mnt
+
+
 #备份相关
 #Mysql
 read -p "是否安装mysql（用途：数据库）(y/n):" my
@@ -228,18 +231,6 @@ nextcloud
 echo "nextcloud端口为11120" >> ~/ZJ/note.txt
 else echo "不安装nextcloud";fi
 
-#片库相关
-#nastools
-read -p "是否安装nastools（用途：自动化片库和刷流等）(y/n):" nt
-if [ $nt = y ];then
-echo '#!/bin/bash' >> ~/ZJ/NT.sh
-printf "docker run -d --name nastools --net=host --hostname nas-tools -e TZ="Asia/Shanghai" -e PUID=1000 -e PGID=1000 -e UMASK=022 -e NASTOOL_AUTO_UPDATE=true -v/mnt/$wj/docker/nt:/config `cat ~/ZJ/QP.txt`" >> ~/ZJ/NT.sh
-printf "\njxxghp/nas-tools:latest" >> ~/ZJ/NT.sh
-chmod +x ~/ZJ/NT.sh
-sh ~/ZJ/NT.sh
-echo "nastool端口为3000，默认用户名是admin，默认密码是password" >> ~/ZJ/note.txt
-else echo "不安装nastools";fi
-
 #Chinesesubfinder
 echo '#!/bin/bash' >> ~/ZJ/ZIMU.sh
 printf "docker run -itd --name zimu --restart=unless-stopped --net=host -e PUID=1000 -e PGID=1000 -e TZ=Asia/Shanghai -v /mnt/$wj/docker/zimu/config:/config -v /mnt/$wh/docker/zimu/cache:/app/cache -v /mnt/$wj/docker/zimu/brower:/root/.cache/rod/brower `cat ~/ZJ/QP.txt`" >> ~/ZJ/ZIMU.sh
@@ -251,4 +242,19 @@ printf "\necho 以后需要查看本次装机相关内容请输入cat ~/ZJ/note.
 chmod +x ~/ZJ/ZIMU.sh
 echo "请设置好nastools后，在ssh窗口输入sh ~/ZJ/ZIMU.sh以安装ChineseSubFinder" >> ~/ZJ/note.txt
 echo "以后需要查看本次装机相关内容请输入cat ~/ZJ/note.txt可查看（这句指令建议记录好）" >> ~/ZJ/note.txt
+if [ $qs = y ];then
+cd /mnt/$wj/docker/QS/config
+find -name 'qBittorrent.conf' | xargs perl -pi -e 's|WebUI\HTTPS\Enabled=true|WebUI\HTTPS\Enabled=false|g'
+docker restart QS
+fi
+if [ $qp = y ];then
+cd /mnt/$wj/docker/QP/config
+find -name 'qBittorrent.conf' | xargs perl -pi -e 's|WebUI\HTTPS\Enabled=true|WebUI\HTTPS\Enabled=false|g'
+docker restart QP
+fi
+if [ $qb = y ];then
+cd /mnt/$wj/docker/QB/config
+find -name 'qBittorrent.conf' | xargs perl -pi -e 's|WebUI\HTTPS\Enabled=true|WebUI\HTTPS\Enabled=false|g'
+fi
+systemctl restart docker
 cat ~/ZJ/note.txt
