@@ -59,6 +59,9 @@ printf "docker run -d --name QS --restart=always --network=host -e WEB_PORT=1116
 printf "\n80x86/qbittorrent:4.3.5-alpine-3.13.5-amd64-full" >> ~/ZJ/QS.sh
 chmod +x ~/ZJ/QS.sh
 sh ~/ZJ/QS.sh
+sleep 2
+sed -i 's/WebUI\\HTTPS\\Enabled=true/WebUI\\HTTPS\\Enabled=false/g' /mnt/$wj/docker/QS/config/qBittorrent.conf
+docker restart QS
 echo "刷流QB端口号为11161，默认用户名为admin,默认密码为adminadmin" >> ~/ZJ/note.txt
 else echo "不安装刷流QB";fi
 
@@ -70,6 +73,9 @@ printf "docker run -d --name QP --restart=always --network=host -e WEB_PORT=1117
 printf "\n80x86/qbittorrent:4.3.5-alpine-3.13.5-amd64-full" >> ~/ZJ/QP.sh
 chmod +x ~/ZJ/QP.sh
 sh ~/ZJ/QP.sh
+sleep 2
+sed -i 's/WebUI\\HTTPS\\Enabled=true/WebUI\\HTTPS\\Enabled=false/g' /mnt/$wj/docker/QP/config/qBittorrent.conf
+docker restart QP
 echo "片库QB端口号为11170，默认用户名为admin,默认密码为adminadmin" >> ~/ZJ/note.txt
 else echo "不安装片库QB";fi
 
@@ -94,6 +100,9 @@ printf "docker run -d --name QB --restart=always --network=host -e WEB_PORT=1118
 printf "\n80x86/qbittorrent:4.3.5-alpine-3.13.5-amd64-full" >> ~/ZJ/QB.sh
 chmod +x ~/ZJ/QB.sh
 sh ~/ZJ/QB.sh
+sleep 2
+sed -i 's/WebUI\\HTTPS\\Enabled=true/WebUI\\HTTPS\\Enabled=false/g' /mnt/$wj/docker/QB/config/qBittorrent.conf
+docker restart QB
 echo "保种QB端口号为11180，默认用户名为admin,默认密码为adminadmin" >> ~/ZJ/note.txt
 else echo "不安装保种QB";fi
 
@@ -189,7 +198,7 @@ else echo "不安装heimdall";fi
 read -p "是否安装nastools（用途：自动化片库和刷流等）(y/n):" nt
 if [ $nt = y ];then
 echo '#!/bin/bash' >> ~/ZJ/NT.sh
-printf "docker run -d --name nastools --net=host --hostname nas-tools -e TZ="Asia/Shanghai" -e PUID=1000 -e PGID=1000 -e UMASK=022 -e NASTOOL_AUTO_UPDATE=true -v/mnt/$wj/docker/nt:/config `cat ~/ZJ/QP.txt`" >> ~/ZJ/NT.sh
+printf "docker run -d --name nastools --restart=always --net=host --hostname nas-tools -e TZ="Asia/Shanghai" -e PUID=1000 -e PGID=1000 -e UMASK=022 -e NASTOOL_AUTO_UPDATE=true -v/mnt/$wj/docker/nt:/config `cat ~/ZJ/QP.txt`" >> ~/ZJ/NT.sh
 printf "\njxxghp/nas-tools:latest" >> ~/ZJ/NT.sh
 chmod +x ~/ZJ/NT.sh
 sh ~/ZJ/NT.sh
@@ -242,19 +251,4 @@ printf "\necho 以后需要查看本次装机相关内容请输入cat ~/ZJ/note.
 chmod +x ~/ZJ/ZIMU.sh
 echo "请设置好nastools后，在ssh窗口输入sh ~/ZJ/ZIMU.sh以安装ChineseSubFinder" >> ~/ZJ/note.txt
 echo "以后需要查看本次装机相关内容请输入cat ~/ZJ/note.txt可查看（这句指令建议记录好）" >> ~/ZJ/note.txt
-if [ $qs = y ];then
-cd /mnt/$wj/docker/QS/config
-find -name 'qBittorrent.conf' | xargs perl -pi -e 's|WebUI\HTTPS\Enabled=true|WebUI\HTTPS\Enabled=false|g'
-docker restart QS
-fi
-if [ $qp = y ];then
-cd /mnt/$wj/docker/QP/config
-find -name 'qBittorrent.conf' | xargs perl -pi -e 's|WebUI\HTTPS\Enabled=true|WebUI\HTTPS\Enabled=false|g'
-docker restart QP
-fi
-if [ $qb = y ];then
-cd /mnt/$wj/docker/QB/config
-find -name 'qBittorrent.conf' | xargs perl -pi -e 's|WebUI\HTTPS\Enabled=true|WebUI\HTTPS\Enabled=false|g'
-fi
-systemctl restart docker
 cat ~/ZJ/note.txt
