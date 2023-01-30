@@ -394,6 +394,7 @@ break
 else
 komlj
 fi
+fi
 done
 printf %s "gotson/komga > /dev/null" >> $docker/komga/komga.sh
 chmod +x $docker/komga/komga.sh
