@@ -394,6 +394,7 @@ break
 else
 komlj
 fi
+fi
 done
 printf %s "gotson/komga > /dev/null" >> $docker/komga/komga.sh
 chmod +x $docker/komga/komga.sh
@@ -469,6 +470,8 @@ az
 if [ $doc -gt 0 ];then
 read -p "是否继续安装其他容器【是请直接回车，否请随意输入后回车】:" con
 if [ $con ];then
+echo 安装结束
+else
 az
 fi
 fi
