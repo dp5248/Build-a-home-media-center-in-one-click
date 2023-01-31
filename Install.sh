@@ -1,5 +1,4 @@
 #!/bin/bash
-#路径确认的函数
 ljconfirm() {
 for var in {1..30}
 do
@@ -12,7 +11,6 @@ fi
 done
 }
 
-#ui端口的防出错函数
 uiBUG() {
 uimr=(3000 8096 8920 1900 7359 32400 3005 5353 8324 32410 32412 32413 32414 32469 8787 8092 9876 8181 8080 4443 5244)
 uifw=({1..65535})
@@ -56,7 +54,6 @@ fi
 done
 }
 
-#用户确认函数
 yh() {
 read -p "`echo -e "\033[34m【想以普通用户运行请直接回车，想以root用户运行请任意输入后回车】:\033[0m"`" yh1
 if [ $yh1 ];then
@@ -68,7 +65,6 @@ gid=$gid1
 fi
 }
 
-#非片库路径设置的函数
 lj() {
 for var in {1..20}
 do
@@ -93,15 +89,12 @@ lje=$XZ
 ljconfirm
 XZ=$lje
 read -p "下载路径$var映射(如dy)为:" xz
-#name\1.sh是用于给下面TR写入路径用的
 printf %s "-v $XZ/$xz:/$xz " >> $docker/$name/$name.sh
 printf %s "-v $XZ:$xz " >> $docker/note/$name\1.sh
-#note\1.txt是给下面TR写入记录用的
 printf "%s\n" "下载路径$var,$XZ/$xz映射为/$xz" >> $docker/$name/note.txt
 printf "%s\n" "下载路径$var,$XZ/$xz映射为/$xz" >> $docker/$name/note\1.txt
 }
 
-#片库路径设置的函数（考虑到nt相关）
 ljpk() {
 for var in {1..20}
 do
@@ -126,22 +119,17 @@ lje=$XZ
 ljconfirm
 XZ=$lje
 read -p "$pklx下载路径$var映射(如dy)为:" xz
-#name\1.sh是用于给对应TR写入路径用的,name\2.sh是给NT写入路径用的,name\3.sh是给plex等写入路径用的
 printf %s "-v $XZ/$xz:/$xz " >> $docker/$name/$name.sh
 printf %s "-v $XZ/$xz:/$xz " >> $docker/note/$name\1.sh
 printf %s "-v $XZ:/$xz " >> $docker/note/$name\2.sh
 printf %s "-v $XZ/nt/$xz:/$xz " >> $docker/note/$name\3.sh
-#note1.txt是给对应TR写入记录用的，note2.txt是给NT写入记录用的,note3.txt是给plex等写入记录用的
 printf "%s\n" "$pklx下载路径$var：$XZ/$xz映射为/$xz" >> $docker/$name/note.txt
 printf "%s\n" "$pklx下载路径$var：$XZ/$xz映射为/$xz" >> $docker/$name/note1.txt
 printf "%s\n" "$pklx下载路径$var：$XZ/$xz映射为/$xz，硬链接的文件路径为$XZ/nt/$xz" >> $docker/$name/note2.txt
 printf "%s\n" "$pklx硬链接的文件路径为$XZ/nt/$xz,映射为/$xz" >> $docker/$name/note3.txt
 }
 
-
-#安装QB的函数，a和b中间需要加入上面的路径函数
 qbaza() {
-#定义容器名和端口，uid和gid
 read -p "QB容器命名为:" name
 mkdir $docker/$name -p
 read -p "WEBUI端口设置为:" WEBUI
@@ -149,15 +137,12 @@ ui=$WEBUI
 uiBUG
 WEBUI=$ui
 yh
-#开始写入shell以安装QB，并记录容器设置情况
 echo '#!/bin/bash' >> $docker/$name/$name.sh
 printf "sudo docker run -d --name $name --restart=always --network=host -e TZ=Asia/Shanghai -e WEBUI_PORT=$WEBUI -e PUID=$uid -e PGID=$gid -v $docker/$name:/config " >> $docker/$name/$name.sh
 printf "%s\n" "Qbittorrent已安装完毕访问端口为$WEBUI" "默认帐号为admin，默认密码为adminadmin" "设置文件为$docker/$name/config" >> $docker/$name/note.txt
 }
 
-
 qbazb() {
-#用户选择QB的版本
 printf "%-20s %-20s %-20s %-20s %-20s %-20s %-20s\n" 支持的版本有： （1）QB4.1.9 （2）QB4.2.5 （3）QB4.3.5 （4）QB4.3.8 （5）QB4.3.9 （6）最新版（不建议）
 read -p "`echo -e "\033[32m请选择QBittorrent的版本选项数字【输入1-6】，不输入直接回车则默认（5）QB4.3.9:\033[0m"`" bb
 if [ $bb ];then
@@ -185,7 +170,6 @@ sh $docker/$name/$name.sh
 printf %s "-v $docker/$name/qBittorrent/BT_backup " >> $docker/note/IYUU1.sh
 cat $docker/$name/note.txt | tee $docker/note.txt -a > /dev/null
 
-#是否安装对应TR
 read -p "是否需要安装该QB对应的TR，用于后期iyuu转种 【是请直接回车，否请随意输入后回车】:" tr1
 if [ $tr1 ];then
 return 0
@@ -195,8 +179,6 @@ trazb
 fi
 }
 
-
-#安装TR的函数
 traza() {
 #用户输入TR相关参数
 read -p "TR容器命名为:" name1
@@ -224,7 +206,6 @@ tra=adminadmin
 fi
 mkdir $docker/$name1/watch -p
 }
-
 
 trazb() {
 #用户选择TR版本
@@ -255,8 +236,6 @@ printf %s "-v $docker/$name1/torrents " >> $docker/note/IYUU1.sh
 cat $docker/$name1/note.txt | tee $docker/note.txt -a > /dev/null
 }
 
-
-#安装片库QB
 pkqb() {
 qbaza
 #pklx=片库类型，根据片库类型去设置好路径
@@ -268,7 +247,6 @@ qbazb
 name6=$name
 }
 
-#安装nastools
 nt() {
 mkdir $docker/nastools -p
 echo "#!/bin/bash" >> $docker/$name2/$name2.sh
@@ -278,7 +256,6 @@ sh $docker/$name2/$name2.sh
 printf "%s\n" "nastool端口为3000，默认用户名是admin，默认密码是password" "`cat $docker/$name/note2.txt`" >> $docker/note.txt
 }
 
-#媒体服务器
 mtfwq() {
 echo "现在开始安装媒体服务器"
 yh
@@ -328,8 +305,6 @@ printf "%s\n" "emby开心版已安装，端口号为8096" "`cat $docker/$name/no
 fi
 }
 
-
-#安装其他用途的QB,TR和其他容器
 qtqb() {
 echo "现在开始安装片库以外用途的QB，TR以及其他容器"
 for qb in {1..10}
@@ -345,7 +320,6 @@ fi
 done
 }
 
-#安装tr
 qttr() {
 for tr in {1..10}
 do
@@ -362,7 +336,6 @@ fi
 done
 }
 
-#Vertex
 vt() {
 mkdir $docker/vertex -p
 read -p "`echo -e "\033[32m现在开始安装vertex，WEBUI端口设置为【不输入直接回车则默认为3001】:\033[0m"`" WEBUI
@@ -381,7 +354,6 @@ sudo docker run -d \
 -p $WEBUI:3000 \
 -e TZ=Asia/Shanghai \
 lswl/vertex:stable > /dev/null
-#确保能读取到vertex的密码
 for cd in {1..30}
 do
 if [ -e $docker/vertex/data/password ];then
@@ -393,7 +365,6 @@ fi
 done
 }
 
-#IYUU
 iy() {
 mkdir $docker/IYUU -p
 printf "sudo docker run -d --restart=always --name IYUU --net=host -v $docker/IYUU/:/IYUU/db -v $docker/IYUU/:/IYUU `cat $docker/note/IYUU1.sh` iyuucn/iyuuplus > /dev/null" >> $docker/IYUU/IYUU.sh
@@ -402,7 +373,6 @@ sh $docker/IYUU/IYUU.sh
 printf "%s\n" "IYUU端口号为8787,打开https://iyuu.cn/" "点击开始使用，并微信扫码，获得爱语飞飞TOKEN" "密码为空，第一次输入时你可以自由设置你的密码；以后密码与第一次相同才能登录" >> $docker/note.txt
 }
 
-#Portainer
 po() {
 mkdir $docker/portainer -p
 sudo docker run -d \
@@ -415,7 +385,6 @@ sudo docker run -d \
 echo "portainer端口号为9000" >> $docker/note.txt
 }
 
-#Filebrower
 fb() {
 mkdir $docker/filebrowser -p
 read -p "`echo -e "\033[32m现在开始安装filebrowser，WEBUI端口设置为【不输入直接回车则默认为8092】:\033[0m"`" WEBUI
@@ -443,7 +412,6 @@ sudo docker run -d \
 echo "filebrowser端口号为$WEBUI,默认用户名为admin，默认密码为admin" >> $docker/note.txt
 }
 
-#Ddns-go
 dd() {
 mkdir $docker/ddns -p
 sudo docker run -d \
@@ -455,7 +423,6 @@ jeessy/ddns-go > /dev/null
 echo "ddns-go端口号为9876" >> $docker/note.txt
 }
 
-#NPM
 npm() {
 echo "现在开始安装npm"
 yh
@@ -472,7 +439,6 @@ jlesage/nginx-proxy-manager:latest > /dev/null
 echo "npm端口为8181，记得去路由器做端口映射，内网ip为nas的ip，端口为4443" >> $docker/note.txt
 }
 
-#VWD
 bwd() {
 mkdir $docker/bitwarden -p
 read -p "`echo -e "\033[32m现在开始安装bitwarden，WEBUI端口设置为【不输入直接回车则默认为20099】:\033[0m"`" WEBUI
@@ -494,7 +460,6 @@ vaultwarden/server:latest > /dev/null
 echo "bitwarden端口为$WEBUI，先设置好反向代理后去再设置bwd" >> $docker/note.txt
 }
 
-#Heimdall
 hm() {
 mkdir $docker/heimdall -p
 read -p "`echo -e "\033[32m现在开始安装heimdall，WEBUI端口设置为【不输入直接回车则默认为20088】:\033[0m"`" WEBUI
@@ -517,7 +482,6 @@ lscr.io/linuxserver/heimdall:latest > /dev/null
 echo "heimdall端口为$WEBUI" >> $docker/note.txt
 }
 
-#书库漫画库
 kom() {
 mkdir $docker/komga/config $docker/komga/tmp -p
 read -p "`echo -e "\033[32m现在开始安装komga，WEBUI端口设置为【不输入直接回车则默认为20077】:\033[0m"`" WEBUI
