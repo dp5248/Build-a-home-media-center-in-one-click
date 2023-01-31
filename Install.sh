@@ -180,7 +180,6 @@ fi
 }
 
 traza() {
-#用户输入TR相关参数
 read -p "TR容器命名为:" name1
 read -p "WEBUI端口设置为:" WEBUI
 ui=$WEBUI
@@ -208,7 +207,6 @@ mkdir $docker/$name1/watch -p
 }
 
 trazb() {
-#用户选择TR版本
 printf "%-20s  %-20s  %-20s  %-20s\n" 支持的版本有： （1）官方最新版 （2）快检版最新版 （3）快检版r13
 read -p "`echo -e "\033[32m请选择TRansmission的版本选项数字【输入1-3】，不输入直接回车则默认（3）快检版r13:\033[0m"`" bb
 if [ $bb ];then
@@ -238,7 +236,6 @@ cat $docker/$name1/note.txt | tee $docker/note.txt -a > /dev/null
 
 pkqb() {
 qbaza
-#pklx=片库类型，根据片库类型去设置好路径
 for pklx in "【电影】" "【电视剧】" "【动漫】"
 do
 ljpk
