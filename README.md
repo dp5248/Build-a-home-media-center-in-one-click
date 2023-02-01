@@ -3,3 +3,9 @@
 2.以下运行过程中的所有输入，不可输入中文，请按提示输入英文/数字或直接回车
 
 3.自动化片库包括QB（和对应的TR，可装可不装），nastools和媒体服务器（plex或emby或jellyfin）
+
+示范（懒人方式）
+![1.png](https://s2.loli.net/2023/02/02/8gD6OQGA5BbTrCj.png)
+
+结果
+![2.png](https://s2.loli.net/2023/02/02/nILNJgTFh6icMBd.png)
