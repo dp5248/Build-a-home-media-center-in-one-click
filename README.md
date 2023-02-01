@@ -4,6 +4,8 @@
 
 3.自动化片库包括QB（和对应的TR，可装可不装），nastools和媒体服务器（plex或emby或jellyfin）
 
+4.请以普通用户运行，不要用root用户运行
+
 示范（懒人方式）
 ![1.png](https://s2.loli.net/2023/02/02/8gD6OQGA5BbTrCj.png)
 
