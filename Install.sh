@@ -23,7 +23,7 @@ uiWARN
 a=`ps -aux | grep $ui | cut -b 78`
 b=`echo $a | wc -c`
 if [ $b -gt 1 ];then
-read -p "`echo -e "\033[30;41m端口$ui已使用，请用其他端口,请输入新的端口:\033[0m"`" ui
+read -p "`echo -e "\033[5m端口$ui已使用，请用其他端口,请输入新的端口:\033[0m"`" ui
 uiWARN
 else
 break
@@ -37,7 +37,7 @@ do
 if [ $ui ];then
 break
 else
-read -p "`echo -e "\033[30;41m该容器端口必须输入,不可直接回车，请输入该容器端口后回车:\033[0m"`" ui
+read -p "`echo -e "\033[5m该容器端口必须输入,不可直接回车，请输入该容器端口后回车:\033[0m"`" ui
 fi
 done
 }
@@ -47,18 +47,18 @@ for var in {1..30}
 do
 uiNULL
 if echo "${uimr[@]}" | grep -w "$ui" &>/dev/null; then
-read -p "`echo -e "\033[30;41m为了不影响该脚本的其他容器，端口$ui请勿使用，请使用其他端口,请输入新的端口:\033[0m"`" ui
+read -p "`echo -e "\033[5m为了不影响该脚本的其他容器，端口$ui请勿使用，请使用其他端口,请输入新的端口:\033[0m"`" ui
 elif echo "${uifw[@]}" | grep -w "$ui" &>/dev/null; then
 break
 else
-read -p "`echo -e "\033[30;41m端口$ui输入错误，请输入1-65535的一个数字作为端口:\033[0m"`" ui
+read -p "`echo -e "\033[5m端口$ui输入错误，请输入1-65535的一个数字作为端口:\033[0m"`" ui
 fi
 done
 }
 
 #用户确认函数
 yh() {
-read -p "`echo -e "\033[34m【想以普通用户运行请直接回车，想以root用户运行请任意输入后回车】:\033[0m"`" yh1
+read -p "`echo -e "\033[31m【想以普通用户运行请直接回车，想以root用户运行请任意输入后回车】:\033[0m"`" yh1
 if [ $yh1 ];then
 uid=0
 gid=0
@@ -155,11 +155,10 @@ printf "sudo docker run -d --name $name --restart=always --network=host -e TZ=As
 printf "%s\n" "Qbittorrent已安装完毕访问端口为$WEBUI" "默认帐号为admin，默认密码为adminadmin" "设置文件为$docker/$name/config" >> $docker/$name/note.txt
 }
 
-
 qbazb() {
 #用户选择QB的版本
 printf "%-20s %-20s %-20s %-20s %-20s %-20s %-20s\n" 支持的版本有： （1）QB4.1.9 （2）QB4.2.5 （3）QB4.3.5 （4）QB4.3.8 （5）QB4.3.9 （6）最新版（不建议）
-read -p "`echo -e "\033[32m请选择QBittorrent的版本选项数字【输入1-6】，不输入直接回车则默认（5）QB4.3.9:\033[0m"`" bb
+read -p "`echo -e "\033[35m请选择QBittorrent的版本选项数字【输入1-6】，不输入直接回车则默认（5）QB4.3.9:\033[0m"`" bb
 if [ $bb ];then
 break
 else
@@ -210,13 +209,13 @@ uiBUG
 PEERPORT=$ui
 peNULL
 peBUG
-read -p "该TR的用户名设置为:`echo -e "\033[32m【输入则按输入的，不输入直接回车则默认admin】\033[0m"`" tra
+read -p "该TR的用户名设置为:`echo -e "\033[35m【输入则按输入的，不输入直接回车则默认admin】\033[0m"`" tra
 if [ $tra ];then
 break
 else
 tra=admin
 fi
-read -p "该TR的密码设置为:`echo -e "\033[32m【输入则按输入的，不输入直接回车则默认adminadmin】\033[0m"`" trb
+read -p "该TR的密码设置为:`echo -e "\033[35m【输入则按输入的，不输入直接回车则默认adminadmin】\033[0m"`" trb
 if [ $trb ];then
 break
 else
@@ -225,11 +224,10 @@ fi
 mkdir $docker/$name1/watch -p
 }
 
-
 trazb() {
 #用户选择TR版本
 printf "%-20s  %-20s  %-20s  %-20s\n" 支持的版本有： （1）官方最新版 （2）快检版最新版 （3）快检版r13
-read -p "`echo -e "\033[32m请选择TRansmission的版本选项数字【输入1-3】，不输入直接回车则默认（3）快检版r13:\033[0m"`" bb
+read -p "`echo -e "\033[35m请选择TRansmission的版本选项数字【输入1-3】，不输入直接回车则默认（3）快检版r13:\033[0m"`" bb
 if [ $bb ];then
 break
 else
@@ -283,7 +281,7 @@ mtfwq() {
 echo "现在开始安装媒体服务器"
 yh
 printf "%-20s  %-20s  %-20s  %-20s\n" 支持的媒体服务器有 （1）plex （2）emby官方 （3）jellyfin （4）emby开心版
-read -p "`echo -e "\033[32m请选择一个媒体服务器【输入1-4】，不输入直接回车则默认（2）emby（官方）:\033[0m"`" mt
+read -p "`echo -e "\033[35m请选择一个媒体服务器【输入1-4】，不输入直接回车则默认（2）emby（官方）:\033[0m"`" mt
 if [ $mt ];then
 break
 else
@@ -365,7 +363,7 @@ done
 #Vertex
 vt() {
 mkdir $docker/vertex -p
-read -p "`echo -e "\033[32m现在开始安装vertex，WEBUI端口设置为【不输入直接回车则默认为3001】:\033[0m"`" WEBUI
+read -p "`echo -e "\033[35m现在开始安装vertex，WEBUI端口设置为【不输入直接回车则默认为3001】:\033[0m"`" WEBUI
 if [ $WEBUI ];then
 break
 else
@@ -418,7 +416,7 @@ echo "portainer端口号为9000" >> $docker/note.txt
 #Filebrower
 fb() {
 mkdir $docker/filebrowser -p
-read -p "`echo -e "\033[32m现在开始安装filebrowser，WEBUI端口设置为【不输入直接回车则默认为8092】:\033[0m"`" WEBUI
+read -p "`echo -e "\033[35m现在开始安装filebrowser，WEBUI端口设置为【不输入直接回车则默认为8092】:\033[0m"`" WEBUI
 if [ $WEBUI ];then
 break
 else
@@ -475,7 +473,7 @@ echo "npm端口为8181，记得去路由器做端口映射，内网ip为nas的ip
 #VWD
 bwd() {
 mkdir $docker/bitwarden -p
-read -p "`echo -e "\033[32m现在开始安装bitwarden，WEBUI端口设置为【不输入直接回车则默认为20099】:\033[0m"`" WEBUI
+read -p "`echo -e "\033[35m现在开始安装bitwarden，WEBUI端口设置为【不输入直接回车则默认为20099】:\033[0m"`" WEBUI
 if [ $WEBUI ];then
 break
 else
@@ -497,7 +495,7 @@ echo "bitwarden端口为$WEBUI，先设置好反向代理后去再设置bwd" >> 
 #Heimdall
 hm() {
 mkdir $docker/heimdall -p
-read -p "`echo -e "\033[32m现在开始安装heimdall，WEBUI端口设置为【不输入直接回车则默认为20088】:\033[0m"`" WEBUI
+read -p "`echo -e "\033[35m现在开始安装heimdall，WEBUI端口设置为【不输入直接回车则默认为20088】:\033[0m"`" WEBUI
 if [ $WEBUI ];then
 break
 else
@@ -520,7 +518,7 @@ echo "heimdall端口为$WEBUI" >> $docker/note.txt
 #书库漫画库
 kom() {
 mkdir $docker/komga/config $docker/komga/tmp -p
-read -p "`echo -e "\033[32m现在开始安装komga，WEBUI端口设置为【不输入直接回车则默认为20077】:\033[0m"`" WEBUI
+read -p "`echo -e "\033[35m现在开始安装komga，WEBUI端口设置为【不输入直接回车则默认为20077】:\033[0m"`" WEBUI
 if [ $WEBUI ];then
 break
 else
@@ -557,7 +555,7 @@ printf "%s\n" "书/漫画路径$var:$XZ映射为/$xz" >> $docker/komga/note.txt
 
 alist() {
 mkdir $docker/alist -p
-read -p "`echo -e "\033[32m现在开始安装alist，WEBUI端口设置为【不输入直接回车则默认为5244】:\033[0m"`" WEBUI
+read -p "`echo -e "\033[35m现在开始安装alist，WEBUI端口设置为【不输入直接回车则默认为5244】:\033[0m"`" WEBUI
 if [ $WEBUI ];then
 break
 else
@@ -628,7 +626,7 @@ do
 if [ $doc -gt 0 ];then
 read -p "是否继续安装其他容器【是请直接回车，否请随意输入后回车】:" con
 if [ $con ];then
-echo -e "\033[32m安装结束\033[0m"
+echo -e "\033[35m安装结束\033[0m"
 break
 else
 az
@@ -638,13 +636,15 @@ done
 }
 
 ts(){
-echo -e "\033[30;41m【注意事项】\\n 1.解释一下路径，片库下载路径，如/volume1/dianying，映射为/dy，那么，该QB实际下载的路径为/volume1/dianying/dy，nt硬链接后的文件路径为/volume1/dianying/nt/dy\033[0m"
-echo -e "\033[30;41m 2.以下运行过程中的所有输入，不建议输入中文（不影响本脚本运行，但相关容器不一定兼容），请按提示输入英文/数字或直接回车\\n 3.请在普通用户下运行，不要在root用户下运行\\n\033[0m"
-echo -e "\033[30;41m运行过程中不同颜色提示时，直接回车和输入回车的区别如下（懒人模式遇到黑色背景，字体有颜色的可直接回车，不影响运行），没颜色提示的必须需要输入后回车\033[0m"
-echo -e "\033[34m直接回车为普通用户运行，随意输入后回车为root用户运行\033[0m"
-echo -e "\033[32m直接回车则以该脚本默认的参数运行，输入后回车则以输入的参数运行\033[0m"
-}
-
+echo -e "\033[30;41m【注意事项】\033[0m"
+echo "1.解释一下路径，片库下载路径，如/volume1/dianying，映射为/dy，那么，该QB实际下载的路径为/volume1/dianying/dy，nt硬链接后的文件路径为/volume1/dianying/nt/dy"
+echo "2.以下运行过程中的所有输入，不建议输入中文（不影响本脚本运行，但相关容器不一定兼容），请按提示输入英文/数字或直接回车"
+echo "3.请在普通用户下运行，不要在root用户下运行"
+echo " "
+echo -e "\033[31m运行过程中不同颜色，懒人模式遇到有颜色的可直接回车，不影响运行。\033[0m"
+echo -e "\033[31m直接回车为普通用户运行，随意输入后回车为root用户运行\033[0m"
+echo -e "\033[35m直接回车则以该脚本默认的参数运行，输入后回车则以输入的参数运行\033[0m"
+} 
 
 ts
 user=`whoami`
@@ -663,4 +663,4 @@ azcon
 
 echo "以后需要查看本次装机相关内容请输入cat $docker/note.txt查看【这句指令建议记录好】">> $docker/note.txt
 echo " "
-echo -e "\033[32m`cat $docker/note.txt`\033[0m"
+echo -e "\033[35m`cat $docker/note.txt`\033[0m"
