@@ -565,6 +565,7 @@ sudo docker run -d \
 --name=alist \
 -v $docker/alist:/opt/alist/data \
 -p $WEBUI:5244 \
+-e TZ=Asia/Shanghai \
 -e PUID=0 -e PGID=0 -e UMASK=022 \
 xhofe/alist:latest > /dev/null
 sleep 3
@@ -639,7 +640,6 @@ echo -e "\033[31m\\n运行过程中不同颜色，懒人模式遇到有颜色的
 echo -e "\033[31m直接回车为普通用户运行，随意输入后回车为root用户运行\033[0m"
 echo -e "\033[35m直接回车则以该脚本默认的参数运行，输入后回车则以输入的参数运行\033[0m"
 } 
-
 
 #现在开始
 ts
