@@ -18,10 +18,9 @@ for uibug in {1..30}
 do
 uiNULL
 uiWARN
-a=`ps -aux | grep $ui | cut -b 78`
-b=`echo $a | wc -c`
-if [ $b -gt 1 ];then
-read -p "`echo -e "\033[5m端口$ui已使用，请用其他端口,请输入新的端口:\033[0m"`" ui
+a=`sudo lsof -i:$ui | wc -c`
+if [ $a -gt 1 ];then
+read -p "`echo -e "\033[30;41m端口$ui已使用，请用其他端口,请输入新的端口:\033[0m"`" ui
 uiWARN
 else
 break
@@ -53,6 +52,7 @@ read -p "`echo -e "\033[5m端口$ui输入错误，请输入1-65535的一个数�
 fi
 done
 }
+
 
 #用户确认函数
 yh() {
