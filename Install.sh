@@ -294,7 +294,7 @@ chmod +x $docker/emby/emby.sh
 sh $docker/emby/emby.sh
 echo -e "\033[35m\\nemby\033[0m访问端口为8096\\n" >> $docker/note.txt
 elif [ $mt = 3 ];then
-mkdir $docker/emby -p
+mkdir $docker/jellyfin -p
 printf %s "sudo docker run -d --name=jellyfin --restart unless-stopped --net=host -e PUID=$uid -e PGID=$gid -e TZ=Asia/Shanghai -v $docker/emby:/config `cat $docker/note/$name\2.sh` >> $docker/jellyfin/jellyfin.sh"
 if [ -c `ls /dev/dri | grep renderD128` ];then
 printf %s "--device /dev/dri:/dev/dri " >> $docker/jellyfin/jellyfin.sh
