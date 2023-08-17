@@ -261,7 +261,7 @@ name6=$name
 nt() {
 mkdir $docker/nastools -p
 echo "#!/bin/bash" >> $docker/$name2/$name2.sh
-printf %s "sudo docker run -d --name nastools --restart=always --net=host --hostname nas-tools -e TZ="Asia/Shanghai" -e PUID=$uid -e PGID=$gid -e UMASK=022 -e NASTOOL_AUTO_UPDATE=true -v $docker/$name2:/config `cat $docker/note/$name\2.sh` jxxghp/nas-tools:latest > /dev/null" >> $docker/$name2/$name2.sh
+printf %s "sudo docker run -d --name nastools --restart=always --net=host --hostname nas-tools -e TZ="Asia/Shanghai" -e PUID=$uid -e PGID=$gid -e UMASK=022 -e NASTOOL_AUTO_UPDATE=true -v $docker/$name2:/config `cat $docker/note/$name\2.sh` nastool/nas-tools:latest > /dev/null" >> $docker/$name2/$name2.sh
 chmod +x $docker/$name2/$name2.sh
 sh $docker/$name2/$name2.sh
 echo -e "\033[35m\\nnastool\033[0m访问端口为3000，默认用户名是admin，默认密码是password\\n" >> $docker/note.txt
